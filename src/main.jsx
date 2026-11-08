@@ -23,6 +23,8 @@ const practiceSlides=['/portfolio/ecommerce.jpg','/portfolio/motion-film.jpg','/
 const skills=[['01','品牌构建','从定位到识别，让品牌拥有清晰、持久的表达。','IDENTITY'],['02','视觉叙事','以图像、字体与动效，建立直觉而鲜明的体验。','ART DIRECTION'],['03','AI 共创','将生成式工具融入创意流程，探索新的视觉边界。','GENERATIVE'],['04','系统思维','兼顾细节与全局，让创意在真实场景中持续生长。','DESIGN SYSTEM']];
 function Photo({id,sizes="(max-width: 520px) 88vw, (max-width: 800px) 44vw, 24vw",loading="lazy",...props}){const image=(width)=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&q=76`;if(id.startsWith('/'))return <img src={id} sizes={sizes} loading={loading} decoding="async" fetchPriority="low" {...props}/>;return <img src={image(800)} srcSet={`${image(480)} 480w, ${image(800)} 800w, ${image(1200)} 1200w`} sizes={sizes} loading={loading} decoding="async" fetchPriority="low" {...props}/>;}
 function App(){
+  const [practiceSlide,setPracticeSlide] = useState(0);
+  useEffect(()=>{const timer=setInterval(()=>setPracticeSlide(current=>(current+1)%practiceSlides.length),6000);return ()=>clearInterval(timer)},[]);
   const pageRef = useRef(null);
   useLayoutEffect(() => {
     const scope = pageRef.current;
