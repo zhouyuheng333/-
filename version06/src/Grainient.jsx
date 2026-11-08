@@ -10,6 +10,7 @@ const STIR_LIFE = 1.3;
 const STIR_STEP = 0.06;
 const TWIRL_LIFE = 2.6;
 const INTRO_SECONDS = 1.6;
+const FRAME_INTERVAL = 1000 / 30;
 const DEFAULT_COLORS = ['#120f17', '#2a0f0a', '#9a3412', '#f97316', '#fed7aa'];
 const TYPES = { linear: 0, radial: 1 };
 const LIFT = 0.2;
@@ -369,6 +370,7 @@ const Grainient = ({
     let grainClock = 0;
     let raf = 0;
     let last = 0;
+    let lastFrame = 0;
     let visible = true;
 
     const syncPalette = () => {
@@ -515,8 +517,13 @@ const Grainient = ({
       raf = 0;
       if (!visible || document.hidden) return;
       const s = settingsRef.current;
-      const dt = last ? clamp((now - last) / 1000, 0.001, 0.05) : 1 / 60;
+      if (lastFrame && now - lastFrame < FRAME_INTERVAL) {
+        raf = requestAnimationFrame(frame);
+        return;
+      }
+      const dt = last ? clamp((now - last) / 1000, 0.001, 0.05) : 1 / 30;
       last = now;
+      lastFrame = now;
       if (!reduce) time += dt * s.speed * 0.16;
       if (introClock < 1) introClock = Math.min(1, introClock + dt / INTRO_SECONDS);
       grainClock += dt;
@@ -529,7 +536,10 @@ const Grainient = ({
       const busy =
         (!reduce && (s.speed > 0 || s.grainAnimated)) || introClock < 1 || trail.length > 0 || spins.length > 0;
       if (busy) raf = requestAnimationFrame(frame);
-      else last = 0;
+      else {
+        last = 0;
+        lastFrame = 0;
+      }
     };
 
     function wake() {
@@ -575,6 +585,7 @@ const Grainient = ({
 
     const onVisibility = () => {
       last = 0;
+      lastFrame = 0;
       wake();
     };
 
@@ -584,13 +595,17 @@ const Grainient = ({
       visible = entries.some(entry => entry.isIntersecting);
       if (visible) {
         last = 0;
+        lastFrame = 0;
         wake();
       }
     });
     intersection.observe(container);
-    window.addEventListener('pointermove', onPointerMove, { passive: true });
-    window.addEventListener('pointerdown', onPointerDown, { passive: true });
-    document.documentElement.addEventListener('pointerleave', onPointerLeave);
+    const listenForInput = settingsRef.current.interactive || settingsRef.current.clickSwirl;
+    if (listenForInput) {
+      window.addEventListener('pointermove', onPointerMove, { passive: true });
+      window.addEventListener('pointerdown', onPointerDown, { passive: true });
+      document.documentElement.addEventListener('pointerleave', onPointerLeave);
+    }
     document.addEventListener('visibilitychange', onVisibility);
     resize();
     wakeRef.current = wake;
@@ -600,9 +615,11 @@ const Grainient = ({
       wakeRef.current = null;
       resizeObserver.disconnect();
       intersection.disconnect();
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerdown', onPointerDown);
-      document.documentElement.removeEventListener('pointerleave', onPointerLeave);
+      if (listenForInput) {
+        window.removeEventListener('pointermove', onPointerMove);
+        window.removeEventListener('pointerdown', onPointerDown);
+        document.documentElement.removeEventListener('pointerleave', onPointerLeave);
+      }
       document.removeEventListener('visibilitychange', onVisibility);
       gl.deleteTexture(target);
       gl.deleteFramebuffer(buffer);
