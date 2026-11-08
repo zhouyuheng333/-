@@ -449,4 +449,4 @@ section.practice-cover.section>.practice-cover-image{height:min(440px,34vw)!impo
 section.practice-cover.section>.practice-cover-image>img{top:-9%!important;height:118%!important}
 
 
-@media(min-width:801px){.portfolio-grid{grid-auto-rows:166px}.portfolio-card-glow:first-child .portfolio-info p{font-size:12px;line-height:1.8}}
+@media(min-width:801px){.portfolio-grid{grid-auto-rows:166px}.portfolio-card-glow:first-child .portfolio-info p{font-size:14px;line-height:1.8;width:300px;max-width:none}}
