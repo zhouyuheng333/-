@@ -17,7 +17,7 @@ const portfolioTypes = [
   {n:'01',title:'电商设计',en:'E-COMMERCE',desc:<>以数据为导向，通过光影、材质与页面叙事，直观展现产品<br/>卖点，降低用户理解成本，提升流量与转化。</>,image:'/portfolio/ecommerce.jpg'},
   {n:'02',title:'视频动画',en:'MOTION & FILM',desc:'三维动态、品牌影像与创意短片，用动态叙事增强视觉感染力，丰富品牌传播触点。',image:'/portfolio/motion-film.jpg'},
   {n:'03',title:'线下物料',en:'PRINT & SPACE',desc:<>覆盖平面印刷、户外广告与展厅空间视觉，把控色彩与落地<br/>工艺，实现品牌的统一表达。</>,image:'/portfolio/print-space.png'},
-  {n:'04',title:'Design Guideline',en:'DESIGN SYSTEM',desc:'搭建品牌视觉规范体系，统一字体、色彩与组件，保障全渠道品牌视觉表达的标准化落地。',image:'/portfolio/design-system.jpg'}
+  {n:'04',title:'Design Guideline',en:'DESIGN SYSTEM',desc:<>搭建品牌视觉规范体系，统一字体、色彩与组件，保障全渠<br/>道品牌视觉表达的标准化落地。</>,image:'/portfolio/design-system.jpg'}
 ];
 const practiceSlides=['/portfolio/ecommerce.jpg','/portfolio/motion-film.jpg','/portfolio/print-space.png','/portfolio/design-system.jpg'];
 const skills=[['01','品牌构建','从定位到识别，让品牌拥有清晰、持久的表达。','IDENTITY'],['02','视觉叙事','以图像、字体与动效，建立直觉而鲜明的体验。','ART DIRECTION'],['03','AI 共创','将生成式工具融入创意流程，探索新的视觉边界。','GENERATIVE'],['04','系统思维','兼顾细节与全局，让创意在真实场景中持续生长。','DESIGN SYSTEM']];
