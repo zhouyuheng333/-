@@ -449,5 +449,5 @@ section.practice-cover.section>.practice-cover-image{height:min(440px,34vw)!impo
 section.practice-cover.section>.practice-cover-image>img{top:-9%!important;height:118%!important}
 
 
-@media(min-width:801px){.portfolio-grid{grid-auto-rows:166px}.portfolio-card-glow:first-child .portfolio-info p,.portfolio-card-glow:nth-child(2) .portfolio-info p{font-size:14px;line-height:1.8;width:380px;max-width:none}}
+@media(min-width:801px){.portfolio-grid{grid-auto-rows:166px}.portfolio-card-glow:first-child .portfolio-info p,.portfolio-card-glow:nth-child(2) .portfolio-info p,.portfolio-card-glow:nth-child(3) .portfolio-info p{font-size:14px;line-height:1.8;width:380px;max-width:none}}
 .practice-slide{animation:practice-slide-in .75s ease both}@keyframes practice-slide-in{from{opacity:0}to{opacity:1}}
