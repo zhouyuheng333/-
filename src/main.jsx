@@ -22,7 +22,7 @@ const portfolioTypes = [
 const practiceSlides=[{src:'/portfolio/practice-01.png',type:'image'},{src:'/portfolio/practice-02.png',type:'image'},{src:'/portfolio/practice-03.png',type:'image'},{src:'/portfolio/practice-04.mp4',type:'video'}];
 const skills=[['01','品牌构建','从定位到识别，让品牌拥有清晰、持久的表达。','IDENTITY'],['02','视觉叙事','以图像、字体与动效，建立直觉而鲜明的体验。','ART DIRECTION'],['03','AI 共创','将生成式工具融入创意流程，探索新的视觉边界。','GENERATIVE'],['04','系统思维','兼顾细节与全局，让创意在真实场景中持续生长。','DESIGN SYSTEM']];
 function Photo({id,sizes="(max-width: 520px) 88vw, (max-width: 800px) 44vw, 24vw",loading="lazy",...props}){const image=(width)=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&q=76`;if(id.startsWith('/'))return <img src={id} sizes={sizes} loading={loading} decoding="async" fetchPriority="low" {...props}/>;return <img src={image(800)} srcSet={`${image(480)} 480w, ${image(800)} 800w, ${image(1200)} 1200w`} sizes={sizes} loading={loading} decoding="async" fetchPriority="low" {...props}/>;}
-function ProjectCategory({item}){const entries={ecommerce:[{title:'NOVA 智能割草机器人',image:'/portfolio/practice-01.png',meta:'产品视觉 · 电商设计'},{title:'消费电子产品视觉',image:item.image,meta:'电商视觉 · 页面设计'}],motion:[{title:'品牌动态影像',image:item.image,meta:'三维动态 · 品牌影像'},{title:'汽车产品动态视觉',image:'/portfolio/practice-04-poster.jpg',meta:'产品动画 · 视觉叙事'}],print:[{title:'品牌户外广告视觉',image:item.image,meta:'户外广告 · 落地呈现'}],guideline:[{title:'品牌视觉规范',image:item.image,meta:'字体 · 色彩 · 组件系统'}]};const projects = entries[item.slug] || [];
+function ProjectCategory({item, goHome}){const entries={ecommerce:[{title:'NOVA 智能割草机器人',image:'/portfolio/practice-01.png',meta:'产品视觉 · 电商设计'},{title:'消费电子产品视觉',image:item.image,meta:'电商视觉 · 页面设计'}],motion:[{title:'品牌动态影像',image:item.image,meta:'三维动态 · 品牌影像'},{title:'汽车产品动态视觉',image:'/portfolio/practice-04-poster.jpg',meta:'产品动画 · 视觉叙事'}],print:[{title:'品牌户外广告视觉',image:item.image,meta:'户外广告 · 落地呈现'}],guideline:[{title:'品牌视觉规范',image:item.image,meta:'字体 · 色彩 · 组件系统'}]};const projects = entries[item.slug] || [];
   const placeholderImages = ["design-system.jpg","motion-film.jpg","practice-02.png","practice-03.png","practice-04-poster.jpg","print-space.png","tool-after-effects.png","tool-blender.png"];
   const placeholders = item.slug === 'ecommerce'
     ? Array.from({ length: Math.max(0, 13 - projects.length) }, (_, index) => ({
@@ -31,7 +31,7 @@ function ProjectCategory({item}){const entries={ecommerce:[{title:'NOVA 智能�
         meta: '待替换',
       }))
     : [];
-  const list = [...projects, ...placeholders];const [query,setQuery]=useState("");const [page,setPage]=useState(1);const pageSize=12;const results=list.filter(project=>[project.title,project.meta,item.title].some(value=>value.toLowerCase().includes(query.trim().toLowerCase())));const pageCount=Math.ceil(results.length/pageSize);const visibleProjects=results.slice((page-1)*pageSize,page*pageSize);function goToPage(nextPage){setPage(nextPage);document.getElementById("project-list")?.scrollIntoView({block:"start"});}return <><header className="nav"><a className="wordmark" href="/#top">ZYH<span>®</span></a><nav><a href="/#about">简历</a><a href="/#work">作品</a><a href="/#practice">练习</a><a href="/#capabilities">能力</a><a href="/#intentions">求职意向</a></nav><a className="nav-cta" href="mailto:hello@lin.design">一起聊聊 <ArrowUpRight size={15}/></a></header><main className="project-archive"><div className="archive-controls"><nav className="archive-categories" aria-label="作品分类">{portfolioTypes.map(category=><a className={category.slug===item.slug?'active':''} key={category.slug} href={`/projects/${category.slug}`}>{category.title}</a>)}</nav><input type="search" aria-label="搜索当前分类作品" placeholder="搜索作品或标签…" value={query} onChange={event=>{setQuery(event.target.value);setPage(1);}}/></div><div className="archive-toolbar" id="project-list"><span>项目作品</span><span>{results.length} 个项目</span></div><section className="archive-grid">{visibleProjects.map((project,index)=><article className="archive-card" key={project.title}><div className="archive-image"><img src={project.image} alt={project.title} loading={index<3?"eager":"lazy"} decoding="async"/><span>{item.title}</span></div><div className="archive-card-copy"><span>{project.meta}</span><h2>{project.title}</h2></div></article>)}{results.length===0 && <p role="status">没有找到匹配的作品。</p>}</section>{pageCount>1 && <nav className="archive-pagination" aria-label="作品分页">
+  const list = [...projects, ...placeholders];const [query,setQuery]=useState("");const [page,setPage]=useState(1);const pageSize=12;const results=list.filter(project=>[project.title,project.meta,item.title].some(value=>value.toLowerCase().includes(query.trim().toLowerCase())));const pageCount=Math.ceil(results.length/pageSize);const visibleProjects=results.slice((page-1)*pageSize,page*pageSize);function goToPage(nextPage){setPage(nextPage);document.getElementById("project-list")?.scrollIntoView({block:"start"});}return <><header className="nav"><a className="wordmark" href="/#top" onClick={goHome}>ZYH<span>®</span></a><nav><a href="/#about">简历</a><a href="/#work">作品</a><a href="/#practice">练习</a><a href="/#capabilities">能力</a><a href="/#intentions">求职意向</a></nav><a className="nav-cta" href="mailto:hello@lin.design">一起聊聊 <ArrowUpRight size={15}/></a></header><main className="project-archive"><div className="archive-controls"><nav className="archive-categories" aria-label="作品分类">{portfolioTypes.map(category=><a className={category.slug===item.slug?'active':''} key={category.slug} href={`/projects/${category.slug}`}>{category.title}</a>)}</nav><input type="search" aria-label="搜索当前分类作品" placeholder="搜索作品或标签…" value={query} onChange={event=>{setQuery(event.target.value);setPage(1);}}/></div><div className="archive-toolbar" id="project-list"><span>项目作品</span><span>{results.length} 个项目</span></div><section className="archive-grid">{visibleProjects.map((project,index)=><article className="archive-card" key={project.title}><div className="archive-image"><img src={project.image} alt={project.title} loading={index<3?"eager":"lazy"} decoding="async"/><span>{item.title}</span></div><div className="archive-card-copy"><span>{project.meta}</span><h2>{project.title}</h2></div></article>)}{results.length===0 && <p role="status">没有找到匹配的作品。</p>}</section>{pageCount>1 && <nav className="archive-pagination" aria-label="作品分页">
   <button type="button" aria-label="上一页" disabled={page===1} onClick={()=>goToPage(page-1)}><ChevronLeft size={18}/></button>
   {Array.from({length:pageCount},(_,index)=>index+1).map(number=>{
     if(number===1 || number===pageCount || Math.abs(number-page)<=1 || (page===1 && number===3)){
@@ -41,7 +41,7 @@ function ProjectCategory({item}){const entries={ecommerce:[{title:'NOVA 智能�
     return null;
   })}
   <button type="button" aria-label="下一页" disabled={page===pageCount} onClick={()=>goToPage(page+1)}><ChevronRight size={18}/></button>
-</nav>}<footer className="archive-footer">ZYH DESIGN STUDIO <a href="mailto:hello@lin.design">项目合作　↗</a></footer></main></>}function HomePage({openCategory}){
+</nav>}<footer className="archive-footer">ZYH DESIGN STUDIO <a href="mailto:hello@lin.design">项目合作　↗</a></footer></main></>}function HomePage({openCategory, skipOpening}){
   const pageRef = useRef(null);
   const heroVideoRef = useRef(null);
   const [practiceSlide,setPracticeSlide] = useState(0);
@@ -54,7 +54,7 @@ function ProjectCategory({item}){const entries={ecommerce:[{title:'NOVA 智能�
     if (!scope || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const ctx = gsap.context(() => {
       const opening = gsap.timeline({ defaults: { ease: 'power4.out' } });
-      opening.fromTo(scope.closest('#root').querySelector('.nav'), { y: -22, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 1.05 }, 0)
+      if (!skipOpening) opening.fromTo(scope.closest('#root').querySelector('.nav'), { y: -22, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 1.05 }, 0)
         .fromTo('.hero-brand, .hero-copy .eyebrow', { y: 22, autoAlpha: 0, filter: 'blur(8px)' }, { y: 0, autoAlpha: 1, filter: 'blur(0px)', duration: 0.9, stagger: 0.12 }, 0.22)
         .fromTo('.hero h1', { clipPath: 'inset(0 0 100% 0)', y: 42, scaleX: 0.92, transformOrigin: 'left center', autoAlpha: 0 }, { clipPath: 'inset(0 0 0% 0)', y: 0, scaleX: 1, autoAlpha: 1, duration: 1.35 }, 0.42)
         .fromTo('.hero-description', { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.9 }, 0.92)
@@ -150,6 +150,17 @@ function App() {
     return () => window.removeEventListener('popstate', updateRoute);
   }, []);
 
+  const [skipOpening, setSkipOpening] = useState(false);
+
+  function goHome(event) {
+    if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    event.preventDefault();
+    window.history.pushState(null, "", "/#top");
+    setSkipOpening(true);
+    setRoute("/");
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
+
   function openCategory(event) {
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
@@ -161,6 +172,6 @@ function App() {
 
   const category = portfolioTypes.find(item => route.replace(/\/$/, '') === '/projects/' + item.slug);
   return category
-    ? <ProjectCategory key={category.slug} item={category}/>
-    : <HomePage openCategory={openCategory}/>;
+    ? <ProjectCategory key={category.slug} item={category} goHome={goHome}/>
+    : <HomePage openCategory={openCategory} skipOpening={skipOpening}/>;
 }
