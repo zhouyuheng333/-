@@ -19,7 +19,10 @@ const portfolioTypes = [
   {n:'03',slug:'print',title:'线下物料',en:'PRINT & SPACE',desc:<>覆盖平面印刷、户外广告与展厅空间视觉，把控色彩与落地<br/>工艺，实现品牌的统一表达。</>,image:'/portfolio/print-space.png'},
   {n:'04',slug:'guideline',title:'Design Guideline',en:'DESIGN SYSTEM',desc:<>搭建品牌视觉规范体系，统一字体、色彩与组件，保障全渠<br/>道品牌视觉表达的标准化落地。</>,image:'/portfolio/design-system.jpg'}
 ];
-const practiceSlides=[{src:'/portfolio/practice-01.png',type:'image'},{src:'/portfolio/practice-02.png',type:'image'},{src:'/portfolio/practice-03.png',type:'image'},{src:'/portfolio/practice-04.mp4',type:'video'}];
+portfolioTypes.push(
+  {n:'05',slug:'hmi',title:'HMI设计',en:'HUMAN–MACHINE INTERFACE',desc:<>探索智能座舱与数字界面，梳理信息层级与交互逻辑，<br/>让视觉表达清晰，让操作更加直观。</>,image:'/portfolio/practice-03.png'},
+  {n:'06',slug:'other',title:'其他',en:'MORE EXPLORATIONS',desc:<>记录跨领域的创意探索与视觉实验，在不同媒介与<br/>表达方式中拓展设计的可能性。</>,image:'/portfolio/practice-02.png'}
+);const practiceSlides=[{src:'/portfolio/practice-01.png',type:'image'},{src:'/portfolio/practice-02.png',type:'image'},{src:'/portfolio/practice-03.png',type:'image'},{src:'/portfolio/practice-04.mp4',type:'video'}];
 const skills=[['01','品牌构建','从定位到识别，让品牌拥有清晰、持久的表达。','IDENTITY'],['02','视觉叙事','以图像、字体与动效，建立直觉而鲜明的体验。','ART DIRECTION'],['03','AI 共创','将生成式工具融入创意流程，探索新的视觉边界。','GENERATIVE'],['04','系统思维','兼顾细节与全局，让创意在真实场景中持续生长。','DESIGN SYSTEM']];
 function Photo({id,sizes="(max-width: 520px) 88vw, (max-width: 800px) 44vw, 24vw",loading="lazy",...props}){const image=(width)=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&q=76`;if(id.startsWith('/'))return <img src={id} sizes={sizes} loading={loading} decoding="async" fetchPriority="low" {...props}/>;return <img src={image(800)} srcSet={`${image(480)} 480w, ${image(800)} 800w, ${image(1200)} 1200w`} sizes={sizes} loading={loading} decoding="async" fetchPriority="low" {...props}/>;}
 // Replace these ten paths with the final listing images, in display order.
@@ -81,7 +84,10 @@ function ProjectGallery({project, onClose}) {
     <nav className="gallery-thumbnails" aria-label="选择作品图片">{images.map((src,number)=><button key={number} type="button" aria-label={'查看第 '+(number+1)+' 张'} aria-current={number===index?'true':undefined} onClick={()=>select(number)}><img src={src} alt="" loading="lazy"/></button>)}</nav>
   </dialog>;
 }
-function ProjectCategory({item, goHome}){const [galleryProject,setGalleryProject]=useState(null);const entries={ecommerce:[{subcategory:'主图',gallery:mideaGallery,title:'美的燃气灶主图设计',image:'/portfolio/practice-01.png',meta:'亚马逊主图'},{subcategory:'A+',title:'消费电子产品视觉',image:item.image,meta:'电商视觉 · 页面设计'}],motion:[{title:'品牌动态影像',image:item.image,meta:'三维动态 · 品牌影像'},{title:'汽车产品动态视觉',image:'/portfolio/practice-04-poster.jpg',meta:'产品动画 · 视觉叙事'}],print:[{title:'品牌户外广告视觉',image:item.image,meta:'户外广告 · 落地呈现'}],guideline:[{title:'品牌视觉规范',image:item.image,meta:'字体 · 色彩 · 组件系统'}]};const projects = entries[item.slug] || [];
+function ProjectCategory({item, goHome}){const [galleryProject,setGalleryProject]=useState(null);const entries={ecommerce:[{subcategory:'主图',gallery:mideaGallery,title:'美的燃气灶主图设计',image:'/portfolio/practice-01.png',meta:'亚马逊主图'},{subcategory:'A+',title:'消费电子产品视觉',image:item.image,meta:'电商视觉 · 页面设计'}],motion:[{title:'品牌动态影像',image:item.image,meta:'三维动态 · 品牌影像'},{title:'汽车产品动态视觉',image:'/portfolio/practice-04-poster.jpg',meta:'产品动画 · 视觉叙事'}],print:[{title:'品牌户外广告视觉',image:item.image,meta:'户外广告 · 落地呈现'}],guideline:[{title:'品牌视觉规范',image:item.image,meta:'字体 · 色彩 · 组件系统'}]};const projects = entries[item.slug] || [
+    {title:item.slug==='hmi'?'智能座舱界面探索':'创意视觉实验',image:item.image,meta:'占位项目 · 待替换'},
+    {title:item.slug==='hmi'?'车载交互设计':'跨媒介设计探索',image:'/portfolio/design-system.jpg',meta:'占位项目 · 待替换'},
+  ];
   const placeholderImages = ["design-system.jpg","motion-film.jpg","practice-02.png","practice-03.png","practice-04-poster.jpg","print-space.png","tool-after-effects.png","tool-blender.png"];
   const placeholders = item.slug === 'ecommerce'
     ? Array.from({ length: Math.max(0, 13 - projects.length) }, (_, index) => ({
@@ -111,6 +117,25 @@ function ProjectCategory({item, goHome}){const [galleryProject,setGalleryProject
   })}
   <button type="button" aria-label="下一页" disabled={page===pageCount} onClick={()=>goToPage(page+1)}><ChevronRight size={18}/></button>
 </nav>}<footer className="archive-footer">ZYH DESIGN STUDIO <a href="mailto:hello@lin.design">项目合作　↗</a></footer></main>{galleryProject && <ProjectGallery project={galleryProject} onClose={()=>setGalleryProject(null)}/>}</>}function HomePage({openCategory, skipOpening}){
+  useEffect(() => {
+    function navigateSection(event) {
+      const link = event.target.closest('a[href^="#"]');
+      if (!link || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      const hash = link.getAttribute('href');
+      const section = document.getElementById(hash.slice(1));
+      if (!section) return;
+      event.preventDefault();
+      window.history.pushState(null, '', hash);
+      const headerHeight = document.querySelector('.nav')?.offsetHeight || 0;
+      const top = hash === '#top' ? 0 : section.getBoundingClientRect().top + window.scrollY - headerHeight;
+      window.scrollTo({top: Math.max(0, top), behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth'});
+    }
+    // Native fragment navigation can scroll overflow-hidden ancestors as well.
+    const hero = document.getElementById('top');
+    if (hero) hero.scrollTop = 0;
+    document.addEventListener('click', navigateSection);
+    return () => document.removeEventListener('click', navigateSection);
+  }, []);
   const pageRef = useRef(null);
   const heroVideoRef = useRef(null);
   const [practiceSlide,setPracticeSlide] = useState(0);
