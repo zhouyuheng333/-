@@ -570,3 +570,39 @@ main > section[id] {
 }
 /* Clip the hero artwork without creating an internally scrollable container. */
 .hero { overflow: clip !important; }
+/* Use the outer border's content box as the single source of card height. */
+.portfolio-card-glow {
+  min-height: 0;
+}
+.portfolio-card-glow > .border-glow-inner {
+  position: absolute;
+  inset: 0;
+  height: auto;
+  min-height: 0;
+}
+.portfolio-card-glow .portfolio-card {
+  flex: 1 1 0;
+  height: auto;
+  min-height: 0;
+  padding: 12px;
+  align-items: stretch;
+  grid-template-rows: minmax(0, 1fr);
+}
+.portfolio-card-glow .portfolio-thumb {
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  align-self: stretch;
+}
+.portfolio-card-glow .portfolio-info {
+  align-self: center;
+}
+@media (max-width: 800px) {
+  .portfolio-card-glow > .border-glow-inner {
+    position: relative;
+    inset: auto;
+  }
+  .portfolio-card-glow .portfolio-thumb {
+    min-height: 115px;
+  }
+}
