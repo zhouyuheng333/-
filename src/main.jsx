@@ -26,12 +26,15 @@ portfolioTypes.push(
 const skills=[['01','品牌构建','从定位到识别，让品牌拥有清晰、持久的表达。','IDENTITY'],['02','视觉叙事','以图像、字体与动效，建立直觉而鲜明的体验。','ART DIRECTION'],['03','AI 共创','将生成式工具融入创意流程，探索新的视觉边界。','GENERATIVE'],['04','系统思维','兼顾细节与全局，让创意在真实场景中持续生长。','DESIGN SYSTEM']];
 function Photo({id,sizes="(max-width: 520px) 88vw, (max-width: 800px) 44vw, 24vw",loading="lazy",...props}){const image=(width)=>`https://images.unsplash.com/${id}?auto=format&fit=crop&w=${width}&q=76`;if(id.startsWith('/'))return <img src={id} sizes={sizes} loading={loading} decoding="async" fetchPriority="low" {...props}/>;return <img src={image(800)} srcSet={`${image(480)} 480w, ${image(800)} 800w, ${image(1200)} 1200w`} sizes={sizes} loading={loading} decoding="async" fetchPriority="low" {...props}/>;}
 // Replace these ten paths with the final listing images, in display order.
-const mideaGallery = [
+const placeholderGallery = [
   'practice-01.png', 'ecommerce.jpg', 'practice-02.png', 'practice-03.png',
   'practice-04-poster.jpg', 'motion-film.jpg', 'print-space.png',
   'design-system.jpg', 'tool-blender.png', 'tool-after-effects.png'
 ].map(name => '/portfolio/' + name);
 
+const mideaGallery = Array.from({length:8}, (_, index) =>
+  '/portfolio/midea-listing-' + String(index + 1).padStart(2, '0') + '.jpg'
+);
 function ProjectGallery({project, onClose}) {
   const dialogRef = useRef(null);
   const [index, setIndex] = useState(0);
@@ -84,7 +87,7 @@ function ProjectGallery({project, onClose}) {
     <nav className="gallery-thumbnails" aria-label="选择作品图片">{images.map((src,number)=><button key={number} type="button" aria-label={'查看第 '+(number+1)+' 张'} aria-current={number===index?'true':undefined} onClick={()=>select(number)}><img src={src} alt="" loading="lazy"/></button>)}</nav>
   </dialog>;
 }
-function ProjectCategory({item, goHome}){const [galleryProject,setGalleryProject]=useState(null);const entries={ecommerce:[{subcategory:'主图',gallery:mideaGallery,title:'美的燃气灶主图设计',image:'/portfolio/practice-01.png',meta:'亚马逊主图'},{subcategory:'A+',title:'消费电子产品视觉',image:item.image,meta:'电商视觉 · 页面设计'}],motion:[{title:'品牌动态影像',image:item.image,meta:'三维动态 · 品牌影像'},{title:'汽车产品动态视觉',image:'/portfolio/practice-04-poster.jpg',meta:'产品动画 · 视觉叙事'}],print:[{title:'品牌户外广告视觉',image:item.image,meta:'户外广告 · 落地呈现'}],guideline:[{title:'品牌视觉规范',image:item.image,meta:'字体 · 色彩 · 组件系统'}]};const projects = entries[item.slug] || [
+function ProjectCategory({item, goHome}){const [galleryProject,setGalleryProject]=useState(null);const entries={ecommerce:[{subcategory:'主图',gallery:mideaGallery,title:'美的燃气灶主图设计',image:'/portfolio/midea-gas-stove-cover.jpg',meta:'亚马逊主图'},{subcategory:'A+',title:'消费电子产品视觉',image:item.image,meta:'电商视觉 · 页面设计'}],motion:[{title:'品牌动态影像',image:item.image,meta:'三维动态 · 品牌影像'},{title:'汽车产品动态视觉',image:'/portfolio/practice-04-poster.jpg',meta:'产品动画 · 视觉叙事'}],print:[{title:'品牌户外广告视觉',image:item.image,meta:'户外广告 · 落地呈现'}],guideline:[{title:'品牌视觉规范',image:item.image,meta:'字体 · 色彩 · 组件系统'}]};const projects = entries[item.slug] || [
     {title:item.slug==='hmi'?'智能座舱界面探索':'创意视觉实验',image:item.image,meta:'占位项目 · 待替换'},
     {title:item.slug==='hmi'?'车载交互设计':'跨媒介设计探索',image:'/portfolio/design-system.jpg',meta:'占位项目 · 待替换'},
   ];
@@ -102,7 +105,7 @@ function ProjectCategory({item, goHome}){const [galleryProject,setGalleryProject
     // Keep the card cover first; replace each project's gallery with its final images.
     gallery: project.gallery || [
       project.image,
-      ...mideaGallery.filter(image => image !== project.image),
+      ...placeholderGallery.filter(image => image !== project.image),
     ].slice(0, 10),
   }));const [query,setQuery]=useState("");const [subcategory,setSubcategory]=useState("全部");const [page,setPage]=useState(1);const pageSize=12;const results=list.filter(project=>(subcategory==="全部" || project.subcategory===subcategory) && [project.title,project.meta,project.subcategory||"",item.title].some(value=>value.toLowerCase().includes(query.trim().toLowerCase())));const pageCount=Math.ceil(results.length/pageSize);const visibleProjects=results.slice((page-1)*pageSize,page*pageSize);function goToPage(nextPage){setPage(nextPage);document.getElementById("project-list")?.scrollIntoView({block:"start"});}return <><header className="nav"><a className="wordmark" href="/#top" onClick={goHome}>ZYH<span>®</span></a><nav><a href="/#about">简历</a><a href="/#work">作品</a><a href="/#practice">练习</a><a href="/#capabilities">能力</a><a href="/#intentions">求职意向</a></nav><a className="nav-cta" href="mailto:hello@lin.design">一起聊聊 <ArrowUpRight size={15}/></a></header><main className="project-archive"><div className="archive-controls"><nav className="archive-categories" aria-label="作品分类">{portfolioTypes.map(category=><a className={category.slug===item.slug?'active':''} key={category.slug} href={`/projects/${category.slug}`}>{category.title}</a>)}</nav><input type="search" aria-label="搜索当前分类作品" placeholder="搜索作品或标签…" value={query} onChange={event=>{setQuery(event.target.value);setPage(1);}}/></div>{item.slug==="ecommerce" && <nav className="archive-subcategories" aria-label="电商设计细分">
   {["全部","主图","A+","渲染","Banner","社媒"].map(type=><button key={type} type="button" aria-pressed={subcategory===type} onClick={()=>{setSubcategory(type);setPage(1);}}>{type}</button>)}
