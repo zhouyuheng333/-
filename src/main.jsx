@@ -14,7 +14,7 @@ const projects = [
   { n:'03', type:'艺术指导 / 包装设计', title:'日常之外，自有风味。', name:'野序 · 东方植物酒', year:'2024', image:'photo-1516594798947-e65505dbb29d', tint:'orange' }
 ];
 const portfolioTypes = [
-  {n:'01',slug:'ecommerce',title:'电商设计',en:'E-COMMERCE',desc:<>以数据为导向，通过光影、材质与页面叙事，直观展现产品<br/>卖点，降低用户理解成本，提升流量与转化。</>,image:'/portfolio/ecommerce.jpg'},
+  {n:'01',slug:'ecommerce',title:'电商设计',en:'E-COMMERCE',desc:<>具体内容包含主图设计、A+设计、活动KV、社媒海报、<br/>产品渲染、精修、二级页面等...</>,image:'/portfolio/ecommerce.jpg'},
   {n:'02',slug:'motion',title:'视频动画',en:'MOTION & FILM',desc:'三维动态、品牌影像与创意短片，用动态叙事增强视觉感染力，丰富品牌传播触点。',image:'/portfolio/motion-film.jpg'},
   {n:'03',slug:'print',title:'线下物料',en:'PRINT & SPACE',desc:<>覆盖平面印刷、户外广告与展厅空间视觉，把控色彩与落地<br/>工艺，实现品牌的统一表达。</>,image:'/portfolio/print-space.png'},
   {n:'04',slug:'guideline',title:'Design Guideline',en:'DESIGN SYSTEM',desc:<>搭建品牌视觉规范体系，统一字体、色彩与组件，保障全渠<br/>道品牌视觉表达的标准化落地。</>,image:'/portfolio/design-system.jpg'}
